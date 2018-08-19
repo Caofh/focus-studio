@@ -1,0 +1,321 @@
+*::after,
+*::before,
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-style: normal;
+  font-weight: normal;
+  box-shadow: none;
+  border-radius: 0;
+  border: none;
+  outline: none;
+  user-select: none;
+}
+
+input[type="text"],
+textarea {
+  user-select: text;
+}
+
+html {
+  font-size: 100px;
+  background-color: #f5f5f5;
+}
+
+$vm_base: 1280;
+@function pr($px) {
+  @return ($px / $vm_base) * 100vw;
+}
+
+$vm_base_content_width:pr(1180);
+$vm_base_content_height:$vm_base_content_width*(24/70);
+html {
+  background: #fff;
+}
+body {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  //overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  margin: auto;
+  font-size: .14rem;
+  background: #fff;
+}
+
+ul {
+  list-style: none
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover,
+a:visited,
+a:link,
+a:active {
+  color: #000000;
+}
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+.text_overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap
+}
+$bigWidth: 68%;
+$smallWidth: 32%;
+$bigHeight: 48vh;
+$smallHeight: 34vh;
+#app {
+  // min-width: 600px;
+  width: 100vw;
+}
+.blankpage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  .bcimg {
+   width: pr(180);
+   height: pr(144);
+   margin: 0 auto;
+   background-size: 100% 100%;
+ }
+ .blanktitle {
+   font-size: pr(20);
+   color: rgb(216,216,216);
+   margin-top: pr(20);
+ }
+}
+
+// 除去头部的高度
+.contentTop60 {
+  position: absolute;
+  left: 0;
+  top: pr(60);
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.mentorshipY {
+  position: absolute;
+  left: 0;
+  top: pr(60);
+  right: 0;
+  bottom: 0;
+}
+
+@media screen and (max-aspect-ratio: 14/10) {
+  .dashboard-margin4 .blankpage .bcimg {
+    width: pr(180);
+   height: pr(144);
+  }
+  body {
+    overflow-y: auto;
+    height: auto;
+    .dashboard .dashboard-margin4 {
+      height: auto;
+      .for-class,
+      .timesbox {
+        width: $vm_base_content_width;
+        height: $vm_base_content_height;
+        border-left: none;
+        margin-bottom: pr(20);
+        order: 1;
+      }
+      .for-class {
+        margin-bottom: 0;
+      }
+      .time-slot {
+        order: 2;
+      }
+      .todo-list,
+      .comming {
+        width: $vm_base_content_width/2;
+        height: $vm_base_content_height;
+        border-left: none;
+        order: 3;
+        border: none;
+      }
+      .comming {
+        order: 4;
+        position: relative;
+        left: 50%;
+        top: -$vm_base_content_height;
+        border-left: pr(10) solid #f5f5f5;
+      }
+      .margin-bottom { height: pr(20); width: 100%; order:5;position: relative;top: -$vm_base_content_height;}
+      .todo-list {
+        border-right: pr(10) solid #f5f5f5;
+      }
+    }
+  }
+}
+@media screen and (min-aspect-ratio: 14/10) {
+  .for-class  {
+    .ppt{width: 49.64vh; flex: none !important;}
+    .info {
+      position: absolute !important;
+      left: 49.64vh;
+      right: 0;height: 100%;top: 0;
+      flex: none !important;
+    }
+  }
+}
+
+// 更改toast样式
+.toasted {
+  padding-left: 43px !important;
+}
+.toasted.primary.error {
+  background: #f54245 !important;
+  &:after {
+    content: '';
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    left: 12px;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    background: url(/teacherabc/static/img/error.png);
+    background-size: 100% 100%;
+  }
+}
+.toasted.primary.success {
+  background: #30c93e !important;
+  &:after {
+    content: '';
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    left: 12px;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    background: url(/teacherabc/static/img/success.png);
+    background-size: 100% 100%;
+  }
+}
+.toasted.primary.info {
+  background: #ffa61f !important;
+  &:after {
+    content: '';
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    left: 12px;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    background: url(/teacherabc/static/img/warning.png);
+    background-size: 100% 100%;
+  }
+}
+
+/*统一风格flex布局*/
+.abc-flex-x-between{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.abc-flex-x-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.abc-flex-x-start{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.abc-flex-x-end{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.abc-flex-y-between{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+}
+.abc-flex-y-center{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.abc-flex-y-start{
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+}
+.abc-flex-y-end{
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  align-items: center;
+}
+/*统一风格：图片父级div*/
+.abc-img {
+  width: 22px;
+  height: 22px;
+  position: relative;
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+/*统一风格: 省略号系列（单行省略号和多行省略号）,注：多行省略号目前只支持chrome浏览器，存在兼容性问题*/
+.abc-ellipsis-single{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.abc-ellipsis-more{ /* 默认两行省略,如多行自行修改下方-webkit-line-clamp值：改为想要省略的行数*/
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+/*统一风格隐藏元素*/
+.abc-hidden{
+  display:none;
+}
+/*统一风格: 按钮(100px,30px)*/
+.abc-btn{
+  display: block;
+  width: 150px;
+  height: 36px;
+  line-height: 34px;
+  text-align: center;
+  font-size: 16px;
+  color: #fff;
+  background: #03A9F4;
+  border-radius: 20px;
+  border: 1px solid #03A9F4;
+  cursor:pointer;
+  text-decoration: none;
+}
+
