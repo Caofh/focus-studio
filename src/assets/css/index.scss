@@ -13,7 +13,7 @@
   user-select: none;
 }
 
-input[type="text"],
+input,
 textarea {
   user-select: text;
 }
@@ -306,15 +306,15 @@ $smallHeight: 34vh;
 /*统一风格: 按钮(100px,30px)*/
 .abc-btn{
   display: block;
-  width: 150px;
-  height: 36px;
-  line-height: 34px;
+  width: 80px;
+  height: 30px;
+  line-height: 30px;
   text-align: center;
   font-size: 16px;
   color: #fff;
-  background: #03A9F4;
-  border-radius: 20px;
-  border: 1px solid #03A9F4;
+  background: #f71;
+  border-radius: 5px;
+  border: 1px solid #f71;
   cursor:pointer;
   text-decoration: none;
 }

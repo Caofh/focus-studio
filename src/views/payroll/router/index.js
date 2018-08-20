@@ -14,6 +14,10 @@ export default new Router({
       path: '/payrollDetail',
       name: 'PayrollDetail',
       component: () => import(/* webpackChunkName: "ChannelShow" */ './PayrollDetail')
+    },{
+      path: '/addProject',
+      name: 'AddProject',
+      component: () => import(/* webpackChunkName: "ChannelShow" */ './AddProject')
     }
   ]
 })

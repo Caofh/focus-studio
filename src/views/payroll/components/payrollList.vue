@@ -10,9 +10,9 @@
             <span class="count">4</span>
           </div>
 
-          <div class="add abc-img">
+          <a class="add abc-img" href="./payroll.html#/addProject">
             <img src="../../../assets/img/payroll/payrollList/add-icon.png">
-          </div>
+          </a>
         </div>
 
         <div class="data-list">
@@ -45,7 +45,7 @@
               </div>
               <div class="operate" style="width: 50px;">
                 <a class="look" href="./payroll.html#/payrollDetail" target="_blank">查看</a>
-                <div class="edit">编辑</div>
+                <a class="edit" href="./payroll.html#/addProject">编辑</a>
               </div>
             </div>
 
@@ -132,8 +132,10 @@ export default {
           }
           .operate {
             margin-right: 0;
-            & > div {
+            & > a {
+              display: block;
               cursor: pointer;
+              color: #2c3e50;
             }
           }
         }

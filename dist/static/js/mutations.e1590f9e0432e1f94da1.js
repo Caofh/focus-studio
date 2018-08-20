@@ -1,2 +1,0 @@
-webpackJsonp([9],{nTSO:function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});t.default={setTest:function(e,t){e.test=t}}}},["nTSO"]);
-//# sourceMappingURL=mutations.e1590f9e0432e1f94da1.js.map
