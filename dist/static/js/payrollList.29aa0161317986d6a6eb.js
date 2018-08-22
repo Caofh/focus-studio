@@ -1,0 +1,2 @@
+webpackJsonp([12],{"2IEL":function(n,e,t){"use strict";function r(n){return n.slice().map(function(n){var e=function(n){var e=[],t=0;return n.map(function(n){e.push(n.name||""),t+=parseFloat(n.hours)*parseFloat(n.perHoursMoney)}),{nameStr:e.join("、"),cost:t}}(n.person_list?JSON.parse(n.person_list):"");n.personList_new=e.nameStr||"",n.cost=e.cost||""}),n}Object.defineProperty(e,"__esModule",{value:!0}),t.d(e,"handlePayrollData",function(){return r})}},["2IEL"]);
+//# sourceMappingURL=payrollList.29aa0161317986d6a6eb.js.map

@@ -154,7 +154,8 @@ export default {
         const obj = {
           id: item,
           name: personMapList(item),
-          hours: hours
+          hours: hours,
+          perHoursMoney: incomeMap[item] || ''
         }
 
         arr.push(obj)
@@ -170,8 +171,6 @@ export default {
 
       return arr
     }
-
-
 
   },
   created () {
@@ -265,11 +264,20 @@ export default {
         const dataList = await addProject(para)
 //        console.log(dataList)
 
-        window.location.href = './payroll.html'
+        this.message = {
+          html: '操作成功',
+          btnType: '3',
+          callback () {
+            setTimeout(() => {
+              window.location.href = './payroll.html'
+            }, 1500)
+          },
+          visiable: true // 是否显示弹窗
+        }
 
       } catch (error) {
         this.message = {
-          html: error.message,
+          html: error.message || '',
           callback () {
             that.confirmMark = true // 释放确定按钮的禁止重复点击状态
           },

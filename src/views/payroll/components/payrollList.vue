@@ -20,7 +20,7 @@
             <div>项目名称</div>
             <div style="width: 150px;">参项人员（3）</div>
             <div>总收入</div>
-            <div>成本</div>
+            <div>工时成本</div>
             <div>盈利</div>
             <div>启动时间</div>
             <div>完成时间</div>
@@ -29,10 +29,10 @@
 
           <div class="list-body">
 
-            <div class="body-item abc-flex-x-center">
-              <div>ABC项目</div>
+            <div v-for="item in dataList" class="body-item abc-flex-x-center">
+              <div>{{ item.project_name || '-' }}</div>
               <div style="width: 150px;">欣儿、旭光、林笛、方晖</div>
-              <div>40000</div>
+              <div>{{ item.add_income || '-' }}</div>
               <div>30000</div>
               <div>10000</div>
               <div>
@@ -57,32 +57,53 @@
 
       </div>
     </div>
+
+    <of_dialog :message="message"></of_dialog>
   </div>
 </template>
 
 <script>
-import $ from 'n-zepto'
-import { getList } from '@/api/test'
+import { getProject } from '@/api/projectList'
+import { handlePayrollData } from './computed/payrollList'
 
 import Header from '../../common/header.vue'
 import Left from '../../common/left.vue'
+import of_dialog from '@/views/components/dialog.vue'
 
 export default {
   name: 'payrollList',
   data () {
     return {
-      radio: window.devicePixelRatio,
+      message: {}, // 弹窗配置数据
+
+      dataList: [], // 项目列表数据
     }
   },
   created () {
 
   },
   async mounted () {
+    try {
+      const dataList = await getProject()
+
+      const data = dataList.data || []
+      const dataResult = handlePayrollData(data)
+
+      this.dataList = dataResult
+
+    } catch (error) {
+      this.message = {
+        html: error.message || '',
+        visiable: true // 是否显示弹窗
+      }
+
+    }
 
   },
   components: {
     Header,
-    Left
+    Left,
+    of_dialog
   }
 
 }
