@@ -60,10 +60,11 @@ const webpackConfig = merge(baseWebpackConfig, {
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin
-    // new HtmlWebpackPlugin({
+    new HtmlWebpackPlugin({
     //   filename: config.build.index,
     //   template: 'index.html',
     //   inject: true,
+      favicon: path.resolve('favicon.ico'),
     //   minify: {
     //     removeComments: true,
     //     collapseWhitespace: true,
@@ -73,7 +74,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     //   },
     //   // necessary to consistently work with multiple chunks via CommonsChunkPlugin
     //   chunksSortMode: 'dependency'
-    // }),
+    }),
     // keep module.id stable when vendor modules does not change
     new webpack.HashedModuleIdsPlugin(),
     // enable scope hoisting
