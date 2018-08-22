@@ -1,0 +1,2 @@
+webpackJsonp([12],{Jc7l:function(e,c,t){"use strict";Object.defineProperty(c,"__esModule",{value:!0});var o={init:function(e,c){e.dispatch,e.commit;console.log(c)}};c.default=o}},["Jc7l"]);
+//# sourceMappingURL=actions.95253b86f173a65e115c.js.map

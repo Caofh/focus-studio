@@ -21,8 +21,6 @@
     },
     created () {
 
-      console.log(this.test)
-
     },
     watch: {
 

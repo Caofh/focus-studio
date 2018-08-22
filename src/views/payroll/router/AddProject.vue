@@ -22,8 +22,6 @@ export default {
   },
   created(){
 
-    console.log(this.test)
-
   },
   watch: {
 

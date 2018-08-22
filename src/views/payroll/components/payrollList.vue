@@ -7,7 +7,7 @@
         <div class="total-part abc-flex-x-between">
           <div class="total abc-flex-x-start">
             <span>总数：</span>
-            <span class="count">4</span>
+            <span class="count">{{ dataList.length || 0 }}</span>
           </div>
 
           <a class="add abc-img" href="./payroll.html#/addProject">
@@ -31,17 +31,17 @@
 
             <div v-for="item in dataList" class="body-item abc-flex-x-center">
               <div>{{ item.project_name || '-' }}</div>
-              <div style="width: 150px;">欣儿、旭光、林笛、方晖</div>
+              <div style="width: 150px;">{{ item.personList_new || '-' }}</div>
               <div>{{ item.add_income || '-' }}</div>
-              <div>30000</div>
-              <div>10000</div>
+              <div>{{ item.cost || '-' }}</div>
+              <div>{{ item.gain || '-' }}</div>
               <div>
-                <div>2018-08-10</div>
-                <div>15:00:00</div>
+                <div>{{ item.start_time ? item.start_time.split(' ')[0] : '-' }}</div>
+                <!--<div>{{ item.start_time ? item.start_time.split(' ')[1] : '-' }}</div>-->
               </div>
               <div>
-                <div>2018-08-10</div>
-                <div>15:00:00</div>
+                <div>{{ item.end_time ? item.end_time.split(' ')[0] : '-' }}</div>
+                <!--<div>{{ item.end_time ? item.end_time.split(' ')[1] : '-' }}</div>-->
               </div>
               <div class="operate" style="width: 50px;">
                 <a class="look" href="./payroll.html#/payrollDetail" target="_blank">查看</a>
@@ -88,6 +88,8 @@ export default {
 
       const data = dataList.data || []
       const dataResult = handlePayrollData(data)
+
+      console.log(dataResult)
 
       this.dataList = dataResult
 
