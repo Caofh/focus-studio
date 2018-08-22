@@ -33,7 +33,7 @@ function handlePayrollData (arr) {
     item.cost = info.cost || ''
     item.gain = parseFloat(item.add_income) - parseFloat(item.cost)
     item.start_time = moment(parseInt(item.start_time)).format('YYYY-MM-DD HH:mm:ss')
-    item.end_time = moment(parseInt(item.end_time)).format('YY-MM-DD HH:mm:ss')
+    item.end_time = moment(parseInt(item.end_time)).format('YYYY-MM-DD HH:mm:ss')
 
   })
 

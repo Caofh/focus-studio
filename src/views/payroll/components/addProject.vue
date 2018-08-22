@@ -5,7 +5,7 @@
       <Left></Left>
       <div class="add-project">
         <div class="title">
-          新增项目
+          {{ this.editMark == 1 ? '新增项目' : '编辑项目' }}
         </div>
 
         <div class="content">
@@ -74,7 +74,11 @@
             <div class="content-title">启动时间：</div>
             <div class="abc-flex-x-start">
               <div class="abc-img"><img src="../../../assets/img/payroll/addProject/date.png"></div>
-              <div class="start-time-input"><input @keyup="startTimeKeyup" type="text" class="startTime" placeholder="项目启动时间"></div>
+              <div class="start-time-input">
+                <input @keyup="startTimeKeyup" :value="startTime_str"
+                       type="text" class="startTime" placeholder="项目启动时间">
+              </div>
+
             </div>
           </div>
 
@@ -82,7 +86,11 @@
             <div class="content-title">完成时间：</div>
             <div class="abc-flex-x-start">
               <div class="abc-img"><img src="../../../assets/img/payroll/addProject/date.png"></div>
-              <div class="end-time-input"><input @keyup="endTimeKeyup" type="text" class="endTime" placeholder="项目完成时间" /></div>
+              <div class="end-time-input">
+                <input @keyup="endTimeKeyup" :value="endTime_str"
+                       type="text" class="endTime" placeholder="项目完成时间" />
+              </div>
+
             </div>
           </div>
 
@@ -113,15 +121,17 @@
 
 <script>
 import moment from 'moment'
-import { personMapList } from './computed/index'
-import date_plugin from '@/assets/js/focus-vendor/date.js' // 日期控件
+import { personMapList, handleData } from './computed/index'
+import date_plugin from '@/assets/js/focus-vendor/date' // 日期控件
 import { incomeMap } from '@/assets/js/static-data/income'
+import { getUrl } from '@/assets/js/focus-vendor/getObj'
 
 import Header from '../../common/header.vue'
 import Left from '../../common/left.vue'
 import of_dialog from '@/views/components/dialog.vue'
 
 import { addProject } from '@/api/addProject'
+import { getProject } from '@/api/projectList'
 
 export default {
   name: 'addProject',
@@ -137,8 +147,11 @@ export default {
       addIncome: '', // 项目总收入
       complete: '1', // 项目是否完成：1：完成；2：未完成
       projectName: '', // 项目名称
+      id: '', // 当editMark为2时才存在，意义为：当前项目的id
 
       confirmMark: true, // 确定按钮的防重复点击标识
+
+      editMark: '1' // 判断是否是编辑回来的标识（1：是新增；2：编辑）
     }
   },
   computed: {
@@ -170,6 +183,13 @@ export default {
       this.incomeAll = incomeAll
 
       return arr
+    },
+
+    startTime_str () {
+      return moment(parseInt(this.startTime)).format('YYYY-MM-DD')
+    },
+    endTime_str () {
+      return moment(parseInt(this.endTime)).format('YYYY-MM-DD')
     }
 
   },
@@ -181,6 +201,9 @@ export default {
   },
   async mounted () {
     this.datePlugin() // 日期控件调用
+
+    // 编辑项目时执行
+    this.edit()
 
   },
   methods: {
@@ -245,9 +268,16 @@ export default {
         endTime: this.endTime,        // 项目结束时间时间戳
         addIncome: this.addIncome,    // 项目总收入
         complete: this.complete,      // 项目是否完成：1：完成；2：未完成
+        edit: this.editMark == 1 ? 1 : 2 // 本次操作是增加还是编辑（1：新增；2：编辑）
+      }
+
+      // 是编辑页面才传id
+      if (this.editMark == 2) {
+        para.id = this.id
       }
 
       // 验证数据的完整性
+      console.log(para)
       const validate = this.validate(para)
       if (!validate) {
         this.message = {
@@ -349,6 +379,45 @@ export default {
         // scrollInput: false
       })
 
+    },
+
+
+    // 判断是编辑项目是执行此方法
+    async edit () {
+      const url = window.location.href
+      const windowPara = url.indexOf('?') && url.split('?')[1] ? url.split('?')[1] : ''
+      const id = getUrl(windowPara).id ? getUrl(windowPara).id : '' // get参数的id值
+
+      // 不存在id则不执行
+      if (!id) return
+
+      this.editMark = '2' // 更新编辑标识
+
+      try {
+        const para = 'id='+id+''
+        const dataList = await getProject(para)
+
+        const data = dataList.data || ''
+        const dataResult = handleData(data) // 处理返回的项目详情数据
+
+        // 将返回的详情数据填充
+        this.projectName = dataResult.projectName // 项目名称
+        this.personList_result = dataResult.personList
+        this.personList = dataResult.personArr // 最终成员id数据
+        this.startTime = dataResult.startTime // 项目启动时间时间戳
+        this.endTime = dataResult.endTime // 项目结束时间时间戳
+        this.addIncome = dataResult.addIncome // 项目总收入
+        this.complete = dataResult.complete // 项目是否完成：1：完成；2：未完成
+        this.id = dataResult.id || '' // 当edit=2时才有值(当前项目的id)
+
+      } catch (error) {
+        this.message = {
+          html: error.message || '',
+          visiable: true // 是否显示弹窗
+        }
+
+      }
+
     }
 
   },
@@ -359,6 +428,7 @@ export default {
   }
 
 }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

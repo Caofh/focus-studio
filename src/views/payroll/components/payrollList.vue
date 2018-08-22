@@ -45,7 +45,7 @@
               </div>
               <div class="operate" style="width: 50px;">
                 <a class="look" href="./payroll.html#/payrollDetail" target="_blank">查看</a>
-                <a class="edit" href="./payroll.html#/addProject">编辑</a>
+                <a class="edit" :href="'./payroll.html#/addProject?id=' + item.id">编辑</a>
               </div>
             </div>
 
