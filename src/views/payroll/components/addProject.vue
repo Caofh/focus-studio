@@ -186,10 +186,10 @@ export default {
     },
 
     startTime_str () {
-      return moment(parseInt(this.startTime)).format('YYYY-MM-DD')
+      return this.startTime ? moment(parseInt(this.startTime)).format('YYYY-MM-DD') : ''
     },
     endTime_str () {
-      return moment(parseInt(this.endTime)).format('YYYY-MM-DD')
+      return this.endTime ? moment(parseInt(this.endTime)).format('YYYY-MM-DD') : ''
     }
 
   },
@@ -382,7 +382,7 @@ export default {
     },
 
 
-    // 判断是编辑项目是执行此方法
+    // 判断是编辑项目时执行此方法
     async edit () {
       const url = window.location.href
       const windowPara = url.indexOf('?') && url.split('?')[1] ? url.split('?')[1] : ''
