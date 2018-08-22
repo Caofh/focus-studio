@@ -30,6 +30,7 @@ function callApi (apiRoot = '/') {
       baseURL: apiRoot,
       timeout: 10000,
       // headers: { 'Authorization': token }
+      headers: {'Content-Type': 'application/json;charset=UTF-8' }
     })
 
   obj.interceptors.request.use(config => {

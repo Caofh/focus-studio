@@ -44,6 +44,9 @@
             $('[node-type='+this.parNode+']').fadeOut(400, () => {this.message.visiable = false})
           }, 1500)
         }
+
+        // 会掉函数，弹窗出现后立即执行
+        this.message.callback && this.message.callback()
       }
     },
     methods: {
@@ -248,6 +251,9 @@
        }
      },
      name: 'vue',
+     callback: function () {
+        console.log(111)
+     }
      visiable: false // 是否显示弹窗
    }
 

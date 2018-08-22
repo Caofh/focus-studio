@@ -8,7 +8,7 @@
   import payrollList from '../components/payrollList.vue'
 
   export default {
-    name: 'Home',
+    name: 'PayrollList',
     data(){
       return {
 

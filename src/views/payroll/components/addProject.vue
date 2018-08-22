@@ -11,7 +11,7 @@
         <div class="content">
           <div class="abc-flex-x-start">
             <div class="content-title">项目名称：</div>
-            <div>ABC项目</div>
+            <div><input v-model="projectName" class="project-name" type="text"></div>
           </div>
 
           <!--参项人员-->
@@ -74,7 +74,7 @@
             <div class="content-title">启动时间：</div>
             <div class="abc-flex-x-start">
               <div class="abc-img"><img src="../../../assets/img/payroll/addProject/date.png"></div>
-              <div class="start-time-input"><input type="text" class="startTime" placeholder="项目启动时间"></div>
+              <div class="start-time-input"><input @keyup="startTimeKeyup" type="text" class="startTime" placeholder="项目启动时间"></div>
             </div>
           </div>
 
@@ -82,7 +82,7 @@
             <div class="content-title">完成时间：</div>
             <div class="abc-flex-x-start">
               <div class="abc-img"><img src="../../../assets/img/payroll/addProject/date.png"></div>
-              <div class="end-time-input"><input type="text" class="endTime" placeholder="项目完成时间" /></div>
+              <div class="end-time-input"><input @keyup="endTimeKeyup" type="text" class="endTime" placeholder="项目完成时间" /></div>
             </div>
           </div>
 
@@ -113,8 +113,6 @@
 
 <script>
 import moment from 'moment'
-//import { getList } from '@/api/test'
-
 import { personMapList } from './computed/index'
 import date_plugin from '@/assets/js/focus-vendor/date.js' // 日期控件
 import { incomeMap } from '@/assets/js/static-data/income'
@@ -123,21 +121,24 @@ import Header from '../../common/header.vue'
 import Left from '../../common/left.vue'
 import of_dialog from '@/views/components/dialog.vue'
 
+import { addProject } from '@/api/addProject'
+
 export default {
   name: 'addProject',
   data () {
     return {
       personList_result: [], // 包含成员工时信息的最终数据(用户暂存工时数据，无实际意义)
       incomeAll: 0, // 工资成本,
-      // 弹窗配置数据
-      message: {},
+      message: {}, // 弹窗配置数据
 
       personList: ['0'], // 最终成员id数据
       startTime: '', // 项目启动时间时间戳
       endTime: '', // 项目结束时间时间戳
       addIncome: '', // 项目总收入
       complete: '1', // 项目是否完成：1：完成；2：未完成
+      projectName: '', // 项目名称
 
+      confirmMark: true, // 确定按钮的防重复点击标识
     }
   },
   computed: {
@@ -174,24 +175,9 @@ export default {
 
   },
   created () {
-    console.log(incomeMap)
 
   },
   watch: {
-    personList (val, valOld) {
-      console.log(val)
-    },
-    personList_new (val, valOld) {
-      console.log(val)
-    },
-    startTime (val, valOld) {
-      console.log(val)
-    },
-    endTime (val, valOld) {
-      console.log(val)
-    },
-
-
 
   },
   async mounted () {
@@ -234,34 +220,87 @@ export default {
       this.personList_result = personListNew
     },
 
+    startTimeKeyup () {
+      this.startTime = ''
+      $('.startTime').val('')
+
+    },
+    endTimeKeyup () {
+      this.endTime = ''
+      $('.endTime').val('')
+
+    },
+
     // 确定按钮方法
-    confirm () {
+    async confirm () {
+      let that = this
+
+      // 防止重复点击
+      if (!this.confirmMark) return
+      this.confirmMark = false
+
       const para = {
-        personList: this.personList,  // 最终成员id数据
+        projectName: this.projectName, // 项目名称
+        personList: this.personList_new,  // 最终成员id数据
         startTime: this.startTime,    // 项目启动时间时间戳
         endTime: this.endTime,        // 项目结束时间时间戳
         addIncome: this.addIncome,    // 项目总收入
         complete: this.complete,      // 项目是否完成：1：完成；2：未完成
       }
 
-      console.log(para)
-      this.message = {
-        header: '我是标题',
-        html: '我是内容',
-        footer: '我是底部',
-        btnType: 2,
-        buttons: {
-          confirm: function () {
-            console.log('success')
-          },
-//          cancel: function () {
-//            console.log('cancel')
-//          }
-        },
-        name: 'vue',
-        visiable: true // 是否显示弹窗
+      // 验证数据的完整性
+      const validate = this.validate(para)
+      if (!validate) {
+        this.message = {
+          html: '亲，请将信息填写完整哦😯',
+          visiable: true // 是否显示弹窗
+        }
+
+        this.confirmMark = true // 释放确定按钮的禁止重复点击状态
+
+        return false
       }
 
+      try {
+        const dataList = await addProject(para)
+//        console.log(dataList)
+
+        window.location.href = './payroll.html'
+
+      } catch (error) {
+        this.message = {
+          html: error.message,
+          callback () {
+            that.confirmMark = true // 释放确定按钮的禁止重复点击状态
+          },
+          visiable: true // 是否显示弹窗
+        }
+
+      }
+
+    },
+
+    // 数据验证
+    validate (data) {
+      let mark = true
+
+      // 任意数据为空时,置为false
+      for (let key in data) {
+        if (!data[key]) {
+          mark = false
+          break
+        }
+      }
+
+      // 各个成员内容必须全填
+      const personList = data.personList
+      personList.map((item) => {
+        if (!item.id || !item.name || !item.hours) {
+          mark = false
+        }
+      })
+
+      return mark
     },
 
     // 日期控件调用
@@ -301,6 +340,7 @@ export default {
         // scrollTime: false,
         // scrollInput: false
       })
+
     }
 
   },
@@ -439,7 +479,7 @@ export default {
           }
         }
 
-        .income {
+        .income, .project-name {
           width: 120px;
           height: 30px;
           background: #f0f0f0;

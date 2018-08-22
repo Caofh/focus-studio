@@ -8,8 +8,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: () => import(/* webpackChunkName: "ChannelShow" */ './Home')
+      name: 'PayrollList',
+      component: () => import(/* webpackChunkName: "ChannelShow" */ './PayrollList')
     },{
       path: '/payrollDetail',
       name: 'PayrollDetail',
