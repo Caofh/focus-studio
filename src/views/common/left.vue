@@ -7,20 +7,24 @@
             </div>
 
             <div class="content">
-                <div class="content-item" v-for="itemSon in item.menu">{{itemSon.title}}</div>
+                <a v-for="itemSon in item.menu" :class="['content-item', {'selected':itemSon.selected}]"
+                    :href="itemSon.url">{{itemSon.title}}</a>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-  //  import $ from 'n-zepto'
-  //  import { getList } from '@/api/test'
   import payrollIcon from '../../assets/img/common/left/left-icon-payroll.png' // 薪资的icon
+
+  const url = window.location.href
+  const address = url.split('#/')[1] ? url.split('#/')[1] : ''
+  const addressResult = address.indexOf('?') ? address.split('?')[0] : address // 当前页面路由
 
   export default {
     data () {
       return {
+
         listData: [
           {
             title: '薪资管理',
@@ -28,7 +32,10 @@
             menu: [
               {
                 title: '项目列表',
-                selected: false
+                url: './payroll.html',
+                selected: (addressResult == '' || addressResult == 'addProject' || addressResult == 'payrollDetail') ?
+                  true :
+                  false
               }
             ]
 
@@ -79,6 +86,13 @@
                     float: left;
                     margin-right: 30px;
                 }
+                .content-item:hover {
+                    color: #f71;
+                }
+                .content-item.selected {
+                    color: #f71;
+                }
+
             }
 
         }

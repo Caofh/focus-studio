@@ -18,7 +18,7 @@
         <div class="data-list">
           <div class="list-header abc-flex-x-center">
             <div>项目名称</div>
-            <div style="width: 150px;">参项人员（3）</div>
+            <div style="width: 150px;">参项人员</div>
             <div>总收入</div>
             <div>工时成本</div>
             <div>盈利</div>
@@ -28,6 +28,7 @@
           </div>
 
           <div class="list-body">
+            <div v-if="!dataList.length" class="loading abc-img"><img src="../../../assets/img/common/loading.gif"></div>
 
             <div v-for="item in dataList" class="body-item abc-flex-x-center">
               <div>{{ item.project_name || '-' }}</div>
@@ -129,7 +130,12 @@ export default {
         width: 30px;
         height: 30px;
         cursor: pointer;
+        opacity: .8;
       }
+      .add:hover {
+        opacity: 1;
+      }
+
     }
 
     .data-list {
@@ -146,6 +152,12 @@ export default {
       }
 
       .list-body {
+        .loading {
+          width: 30px;
+          height: 30px;
+          margin: 30px auto 0;
+        }
+
         .body-item {
           padding: 10px 0;
           border-bottom: 1px solid #CACACA;
@@ -159,6 +171,10 @@ export default {
               display: block;
               cursor: pointer;
               color: #2c3e50;
+            }
+            & > a:hover {
+              text-decoration: underline;
+              color: #64a4ff;
             }
           }
         }
