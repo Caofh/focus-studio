@@ -48,7 +48,7 @@
                   <div class="abc-flex-x-start">
                     <div>ABC项目共盈利：6000元；</div>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <div>参与成员：欣儿、林笛</div>
+                    <div>参与成员：欣儿、林笛、方晖、旭光、功勋、李琦、叶凡</div>
                   </div>
 
                   <div>
@@ -79,7 +79,7 @@
 
                     <div class="list-body">
 
-                      <div class="body-item abc-flex-x-start">
+                      <div v-for="item in [1,2,3,4,5,6,7]" class="body-item abc-flex-x-start">
                         <div style="width: 150px;">欣儿</div>
                         <div>1200</div>
                       </div>
@@ -194,7 +194,7 @@ export default {
   .base-content {
     margin: 0 auto;
     width: 1200px;
-    min-height: 800px;
+    min-height: 1500px;
     align-items: flex-start;
   }
   .payroll-Detail {
@@ -231,13 +231,14 @@ export default {
             position: absolute;
             top: 40px;
             left: 100px;
-            width: 790px;
+            max-width: 790px;
             height: auto;
-            border-radius: 5px;
+            /*border-radius: 5px;*/
             border: 1px solid #979797;
             background: #fff;
-            padding: 40px 0 40px 50px;
+            padding: 20px;
             z-index: 300;
+            font-size: 16px;
              & > .abc-img {
               position: absolute;
               width: 19px;
