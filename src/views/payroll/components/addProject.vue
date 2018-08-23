@@ -45,6 +45,7 @@
               <div class="list-header abc-flex-x-start">
                 <div style="width: 150px;">人员</div>
                 <div>工时</div>
+                <div>销售人员</div>
               </div>
 
               <div class="list-body">
@@ -53,6 +54,7 @@
                   <div style="width: 150px;">{{ item.name || '-' }}</div>
                   <div><input v-model="item.hours" @input="changeHours(item, index)"
                               type="text" onkeypress='return( /[\d]/.test(String.fromCharCode(event.keyCode) ) )'></div>
+                  <div><input type="radio" name="saleMan" v-model="saleMan" :value="item.id"></div>
                 </div>
 
               </div>
@@ -147,6 +149,7 @@ export default {
       addIncome: '', // 项目总收入
       complete: '1', // 项目是否完成：1：完成；2：未完成
       projectName: '', // 项目名称
+      saleMan: '', // 销售人员的id
       id: '', // 当editMark为2时才存在，意义为：当前项目的id
 
       confirmMark: true, // 确定按钮的防重复点击标识
@@ -268,6 +271,7 @@ export default {
         endTime: this.endTime,        // 项目结束时间时间戳
         addIncome: this.addIncome,    // 项目总收入
         complete: this.complete,      // 项目是否完成：1：完成；2：未完成
+        saleMan: this.saleMan,      // 项目销售人员
         edit: this.editMark == 1 ? 1 : 2 // 本次操作是增加还是编辑（1：新增；2：编辑）
       }
 
@@ -277,7 +281,7 @@ export default {
       }
 
       // 验证数据的完整性
-      console.log(para)
+//      console.log(para)
       const validate = this.validate(para)
       if (!validate) {
         this.message = {
