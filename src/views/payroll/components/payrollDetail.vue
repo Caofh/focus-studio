@@ -4,30 +4,30 @@
     <div class="base-content abc-flex-x-between">
       <Left></Left>
       <div class="payroll-Detail">
-        <div class="title">ABC项目总收入：10000</div>
+        <div class="title">{{ dataList.project_name || '' }}总收入：{{ dataList.allPay && dataList.incomePay ? dataList.allPay + dataList.incomePay : 0 }}<span> 元</span></div>
         <div class="base-info">
 
           <div>
-            <div class="title">一、ABC项目基本薪资部分</div>
+            <div class="title">一、{{ dataList.project_name || '' }}基本薪资部分</div>
             <div class="data-detail">
               <div class="list-header abc-flex-x-start">
-                <div style="width: 150px;">参项人员（3）</div>
+                <div style="width: 150px;">参项人员（{{ dataList.baseData ? dataList.baseData.length : 0 }}）</div>
                 <div>创始人基础（元）</div>
                 <div>销售（元）</div>
                 <div>工时（h）</div>
-                <div>工资（100/小时）</div>
+                <div>工资（元）</div>
                 <div>合计</div>
               </div>
 
               <div class="list-body">
 
-                <div class="body-item abc-flex-x-start">
-                  <div style="width: 150px;">欣儿</div>
-                  <div>1000</div>
-                  <div>1000</div>
-                  <div>10h</div>
-                  <div>1000</div>
-                  <div>3000</div>
+                <div v-for="item in dataList.baseData" class="body-item abc-flex-x-start">
+                  <div style="width: 150px;">{{ item.name || '-' }}</div>
+                  <div>{{ item.founder_money || '-' }}</div>
+                  <div>{{ item.sale || '-' }}</div>
+                  <div>{{ item.hours || '-' }}h</div>
+                  <div>{{ item.hours_sale || '-' }}</div>
+                  <div>{{ item.all || '-' }}</div>
                 </div>
 
               </div>
@@ -37,7 +37,7 @@
 
           <div>
             <div class="title bonus abc-flex-x-start">
-              <div>二、ABC项目分红部分</div>
+              <div>二、{{ dataList.project_name || '' }}分红部分</div>
               <div @mouseenter="enter" @mouseleave="leave"
                    class="abc-img"><img src="../../../assets/img/payroll/payrollDetail/question-icon.png"></div>
 
@@ -46,45 +46,51 @@
                 <div class="abc-img"><img src="../../../assets/img/payroll/payrollDetail/up.png"></div>
                 <div class="base-body">
                   <div class="abc-flex-x-start">
-                    <div>ABC项目共盈利：6000元；</div>
+                    <div>{{ dataList.project_name || '' }}共盈利：{{ dataList.incomePay || '' }}元；</div>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <div>参与成员：欣儿、林笛、方晖、旭光、功勋、李琦、叶凡</div>
+                    <div>参与成员：<span v-for="(item, index) in dataList.bonusData">{{ item.name || '-' }} {{index == (dataList.bonusData.length - 1) ? '' : '、'}} </span></div>
                   </div>
 
                   <div>
-                    <div>欣儿（10%）：600元</div>
+                    <div>欣儿（10%）：{{ dataList.incomePay ? Math.round(parseFloat(dataList.incomePay * 10 / 100)) : '-' }}元</div>
                   </div>
 
                   <div class="down abc-flex-x-start">
                     <div class="abc-img"><img src="../../../assets/img/payroll/payrollDetail/direction_icon.png"></div>
-                    <div>余：5400元</div>
+                    <div>余：{{ dataList.incomePay ? dataList.incomePay - (Math.round(parseFloat(dataList.incomePay * 10 / 100))) : '-' }}元</div>
                   </div>
 
                   <div>
-                    <div>工作室（50%）：3000元</div>
+                    <div>工作室（50%）：{{ dataList.incomePay ? Math.round(parseFloat(dataList.incomePay * 50 / 100)) : '-' }}元</div>
                   </div>
 
                   <div class="down abc-flex-x-start">
                     <div class="abc-img"><img src="../../../assets/img/payroll/payrollDetail/direction_icon.png"></div>
-                    <div>余：2400元</div>
+                    <div>余：{{ dataList.incomePay ? dataList.incomePay - (Math.round(parseFloat(dataList.incomePay * 10 / 100))) - (Math.round(parseFloat(dataList.incomePay * 50 / 100))) : '-' }}元</div>
                   </div>
 
-                  <div>分红部分：（2400）</div>
+                  <div>分红部分：（{{ dataList.incomePay ? dataList.incomePay - (Math.round(parseFloat(dataList.incomePay * 10 / 100))) - (Math.round(parseFloat(dataList.incomePay * 50 / 100))) : '-' }}）</div>
 
                   <div class="data-detail">
                     <div class="list-header abc-flex-x-start">
-                      <div style="width: 150px;">参项人员（3）</div>
+                      <div style="width: 150px;">参项人员（{{ dataList.bonusData ? dataList.bonusData.length: 0 }}）</div>
                       <div>分红金额（元）</div>
                     </div>
 
                     <div class="list-body">
 
-                      <div v-for="item in [1,2,3,4,5,6,7]" class="body-item abc-flex-x-start">
-                        <div style="width: 150px;">欣儿</div>
-                        <div>1200</div>
+                      <div v-for="item in dataList.bonusData" class="body-item abc-flex-x-start">
+                        <div style="width: 150px;">{{ item.name || '-' }}</div>
+                        <div>{{ item.bonus_money || '-' }}</div>
                       </div>
 
                     </div>
+                  </div>
+
+                  <div>
+                    由于个人分红按照小数位舍去原则，将剩余金额并入工作室资金中，本次分红剩余<span class="big-word">{{ dataList.studio_money - Math.round(parseFloat(dataList.incomePay * 50 / 100)) }}</span> 元<br/>
+                    并入工作室总收入。<br/>
+                    故工作室总收入为<span class="big-word">{{ dataList.studio_money }}</span>元
                   </div>
 
                 </div>
@@ -93,7 +99,7 @@
             </div>
             <div class="data-detail">
               <div class="list-header abc-flex-x-start">
-                <div style="width: 150px;">参项人员（3）</div>
+                <div style="width: 150px;">参项人员（{{ dataList.bonusData ? dataList.bonusData.length: 0 }}）</div>
                 <div>创始人基础（元）</div>
                 <div>分红金额（元）</div>
                 <div>合计（元）</div>
@@ -101,11 +107,11 @@
 
               <div class="list-body">
 
-                <div class="body-item abc-flex-x-start">
-                  <div style="width: 150px;">欣儿</div>
-                  <div>600</div>
-                  <div>1200</div>
-                  <div>1800</div>
+                <div v-for="item in dataList.bonusData" class="body-item abc-flex-x-start">
+                  <div style="width: 150px;">{{ item.name || '-' }}</div>
+                  <div>{{ item.founder_money || '-' }}</div>
+                  <div>{{ item.bonus_money || '-' }}</div>
+                  <div>{{ item.all || '-' }}</div>
                 </div>
 
               </div>
@@ -114,9 +120,9 @@
           </div>
 
           <div>
-            <div class="title">三、ABC项目工作室盈利：</div>
+            <div class="title">三、{{ dataList.project_name || '' }}工作室盈利：</div>
             <div class="abc-flex-x-start">
-              <span class="count">3000</span>
+              <span class="count">{{ dataList.studio_money ? dataList.studio_money : '' }}</span>
               <span class="unit">元</span>
             </div>
           </div>
@@ -129,15 +135,15 @@
             </div>
             <div class="data-detail">
               <div class="list-header abc-flex-x-start">
-                <div style="width: 150px;">参项人员（3）</div>
+                <div style="width: 150px;">参项人员（{{ dataList.bonusData ? dataList.bonusData.length: 0 }}）</div>
                 <div>金额（元）</div>
               </div>
 
               <div class="list-body">
 
-                <div class="body-item abc-flex-x-start">
-                  <div style="width: 150px;">欣儿</div>
-                  <div>1200</div>
+                <div v-for="item in dataList.bonusData" class="body-item abc-flex-x-start">
+                  <div style="width: 150px;">{{ item.name || '-' }}</div>
+                  <div>{{ item.payAndBonus || '-' }}</div>
                 </div>
 
               </div>
@@ -149,27 +155,58 @@
 
       </div>
     </div>
+
+    <of_dialog :message="message"></of_dialog>
   </div>
 </template>
 
 <script>
 import $ from 'n-zepto'
-import { getList } from '@/api/test'
+import { payRollDetail } from '@/api/payrollDetail'
+import { getUrl } from '@/assets/js/focus-vendor/getObj'
 
 import Header from '../../common/header.vue'
 import Left from '../../common/left.vue'
+import of_dialog from '@/views/components/dialog.vue'
 
 export default {
   name: 'payrollList',
   data () {
     return {
-      dialogMark: false // 悬浮弹窗显示标识
+      dialogMark: false, // 悬浮弹窗显示标识
+      message: {}, // 弹窗配置数据
+
+
+      dataList: '', // 请求接口获取的薪酬详情页数据
+
     }
   },
   created () {
 
   },
   async mounted () {
+    const url = window.location.href
+    const windowPara = url.indexOf('?') && url.split('?')[1] ? url.split('?')[1] : ''
+    const id = getUrl(windowPara).id ? getUrl(windowPara).id : '' // get参数的id值
+
+    try {
+      const para = 'id='+id+''
+      const dataList = await payRollDetail(para)
+//      console.log(dataList)
+
+      this.dataList = dataList.data || ''
+
+    } catch (error) {
+      this.message = {
+        html: error.message || '',
+        visiable: true // 是否显示弹窗
+      }
+
+    }
+
+
+
+
 
   },
   methods: {
@@ -182,7 +219,8 @@ export default {
   },
   components: {
     Header,
-    Left
+    Left,
+    of_dialog
   }
 
 }
@@ -249,6 +287,11 @@ export default {
             .base-body {
               & > div {
                 margin-bottom: 20px;
+
+                .big-word {
+                  font-size: 24px;
+                  color: #f71;
+                }
               }
               & > .down {
                 padding-left: 40px;

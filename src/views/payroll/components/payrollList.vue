@@ -21,7 +21,7 @@
             <div style="width: 150px;">参项人员</div>
             <div>总收入</div>
             <div>工时成本</div>
-            <div>盈利</div>
+            <div>工作室盈利</div>
             <div>启动时间</div>
             <div>完成时间</div>
             <div class="operate" style="width: 50px;">操作</div>
@@ -35,7 +35,7 @@
               <div style="width: 150px;">{{ item.personList_new || '-' }}</div>
               <div>{{ item.add_income || '-' }}</div>
               <div>{{ item.cost || '-' }}</div>
-              <div>{{ item.gain || '-' }}</div>
+              <div class="abc-f71">{{ item.studio_money || '-' }}</div>
               <div>
                 <div>{{ item.start_time ? item.start_time.split(' ')[0] : '-' }}</div>
                 <!--<div>{{ item.start_time ? item.start_time.split(' ')[1] : '-' }}</div>-->
@@ -46,7 +46,7 @@
               </div>
               <div class="operate" style="width: 50px;">
                 <a class="edit" :href="'./payroll.html#/addProject?id=' + item.id">编辑</a>
-                <a class="look" href="./payroll.html#/payrollDetail" target="_blank">查看</a>
+                <a class="look" :href="'./payroll.html#/payrollDetail?id=' + item.id" target="_blank">查看</a>
               </div>
             </div>
 
