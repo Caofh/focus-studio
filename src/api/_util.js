@@ -1,5 +1,4 @@
 import axios from 'axios'
-import ENV from '../../env' // 获取当前项目环境（local：本地；test：测试环境；prod：线上环境）
 import cookie from 'component-cookie'
 import gateway from '../_gateway.config'
 
@@ -22,9 +21,10 @@ import gateway from '../_gateway.config'
 //   return `${account}/api${apiRoot}`
 // }
 
-// 区分环境（线上和测试）
+let host = window.location.host
+// 区分环境（线上域名:'focus.tpdoc.cn'和测试域名:'focus_test.tpdoc.cn'）
 let apiRoot_default = '/'
-if (ENV == 'prod') {
+if (/focus\.tpdoc\.cn/.test(host)) {
   apiRoot_default = 'http://tpdoc.cn:3001'
 } else {
   apiRoot_default = 'http://tpdoc.cn:3002'
