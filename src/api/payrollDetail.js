@@ -1,6 +1,6 @@
 import { callApi } from './_util'
 
-const axios = callApi('http://tpdoc.cn:3001')
+const axios = callApi()
 
 export function payRollDetail (para = '') {
   return axios.get(`/payRollDetail?${para}`)

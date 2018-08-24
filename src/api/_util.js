@@ -1,4 +1,5 @@
 import axios from 'axios'
+import ENV from '../../env' // 获取当前项目环境（local：本地；test：测试环境；prod：线上环境）
 import cookie from 'component-cookie'
 import gateway from '../_gateway.config'
 
@@ -21,13 +22,21 @@ import gateway from '../_gateway.config'
 //   return `${account}/api${apiRoot}`
 // }
 
+// 区分环境（线上和测试）
+let apiRoot_default = '/'
+if (ENV == 'prod') {
+  apiRoot_default = 'http://tpdoc.cn:3001'
+} else {
+  apiRoot_default = 'http://tpdoc.cn:3002'
+}
+
 export
-function callApi (apiRoot = '/') {
+function callApi (apiRoot = '') {
 
   var obj = {}
     // var token = cookie('abc-token') || decodeURIComponent(getQueryString('authToken'))
     obj = axios.create({
-      baseURL: apiRoot,
+      baseURL: apiRoot ? apiRoot : apiRoot_default,
       timeout: 10000,
       // headers: { 'Authorization': token }
       headers: {'Content-Type': 'application/json;charset=UTF-8' }
