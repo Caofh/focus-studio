@@ -69,7 +69,13 @@
 
           <div class="abc-flex-x-start">
             <div class="content-title">总收入：</div>
-            <div><input v-model="addIncome" class="income" placeholder="请输入项目总收入"></div>
+            <div><input v-model="addIncome" @input="addIncomeInput" class="income" placeholder="请输入项目总收入"></div>
+            <div v-if="addIncome" class="computed-gain">
+                本项目工作室可盈利
+                <span class="abc-f71">{{ this.studioGain && this.studioGain.studio_money ? this.studioGain.studio_money : '' }}</span>
+                元
+            </div>
+
           </div>
 
           <div class="start-time abc-flex-x-start">
@@ -132,7 +138,7 @@ import Header from '../../common/header.vue'
 import Left from '../../common/left.vue'
 import of_dialog from '@/views/components/dialog.vue'
 
-import { addProject } from '@/api/addProject'
+import { addProject, computedGain } from '@/api/addProject'
 import { getProject } from '@/api/projectList'
 
 export default {
@@ -142,6 +148,7 @@ export default {
       personList_result: [], // 包含成员工时信息的最终数据(用户暂存工时数据，无实际意义)
       incomeAll: 0, // 工资成本,
       message: {}, // 弹窗配置数据
+      studioGain: '', // 工作室可盈利金额
 
       personList: ['0'], // 最终成员id数据
       startTime: '', // 项目启动时间时间戳
@@ -158,7 +165,7 @@ export default {
     }
   },
   computed: {
-    // 监听选中的成员列边，重组工时列表数据
+    // 监听选中的成员列边，重组工时列表数据(与personList联动，改变personList_new和incomeAll字段)
     personList_new () {
       let arr = [] // 工时部分数组
       let incomeAll = 0 // 工资成本
@@ -200,9 +207,14 @@ export default {
 
   },
   watch: {
+    studioGain (val, oldVal) {
+        console.log(val)
+
+
+    }
 
   },
-  async mounted () {
+  mounted () {
     this.datePlugin() // 日期控件调用
 
     // 编辑项目时执行
@@ -210,6 +222,25 @@ export default {
 
   },
   methods: {
+    // 计算本项目工作室可盈利金额
+    async addIncomeInput () {
+      const addIncome = this.addIncome || ''
+      const personList = this.personList_new || ''
+      const saleMan = this.saleMan || ''
+
+      const para = {
+        addIncome: addIncome,
+        saleMan: saleMan,
+        personList: personList
+      }
+      const dataList = await computedGain(para)
+      const data = dataList.data || ''
+//      console.log(data)
+
+      this.studioGain = data
+
+    },
+
     // 新增项目成员方法
     addPerson () {
       // 新增选中项目成员
@@ -412,7 +443,10 @@ export default {
         this.endTime = dataResult.endTime // 项目结束时间时间戳
         this.addIncome = dataResult.addIncome // 项目总收入
         this.complete = dataResult.complete // 项目是否完成：1：完成；2：未完成
+        this.saleMan = dataResult.saleMan // 项目是否完成：1：完成；2：未完成
         this.id = dataResult.id || '' // 当edit=2时才有值(当前项目的id)
+
+        this.addIncomeInput() // 计算本项目工作室可盈利金额
 
       } catch (error) {
         this.message = {
@@ -465,6 +499,13 @@ export default {
 
         .content-title {
           width: 150px;
+        }
+
+        .computed-gain {
+            margin-left: 20px;
+            .abc-f71 {
+                margin: 0 5px;
+            }
         }
 
         .person-info-par {

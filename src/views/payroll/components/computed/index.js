@@ -36,7 +36,8 @@ function handleData (arr = '') {
     startTime: data.start_time || '',    // 项目启动时间时间戳
     endTime: data.end_time || '',        // 项目结束时间时间戳
     addIncome: data.add_income || '',    // 项目总收入
-    complete: data.complete,             // 项目是否完成：1：完成；2：未完成
+    complete: data.complete || '',             // 项目是否完成：1：完成；2：未完成
+    saleMan: data.sale_man || '',             // 项目是否完成：1：完成；2：未完成
     id: data.id || '' // 项目的标识
   }
 

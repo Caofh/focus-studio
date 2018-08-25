@@ -28,7 +28,8 @@
           </div>
 
           <div class="list-body">
-            <div v-if="!dataList.length" class="loading abc-img"><img src="../../../assets/img/common/loading.gif"></div>
+            <div v-if="!dataList.length && !haveRequest" class="loading abc-img"><img src="../../../assets/img/common/loading.gif"></div>
+            <div v-if="!dataList.length && haveRequest" class="loading abc-img" style="width:100px;">暂无数据</div>
 
             <div v-for="item in dataList" class="body-item abc-flex-x-center">
               <div>{{ item.project_name || '-' }}</div>
@@ -75,6 +76,7 @@ export default {
   name: 'payrollList',
   data () {
     return {
+      haveRequest: false, // 列表接口是否请求完毕（用于区分loading动态图和暂无数据文案）
       message: {}, // 弹窗配置数据
 
       dataList: [], // 项目列表数据
@@ -89,12 +91,13 @@ export default {
 
       const data = dataList.data || []
       const dataResult = handlePayrollData(data)
+//      console.log(dataResult)
 
-      console.log(dataResult)
-
+      this.haveRequest = true // 列表接口是否请求完毕（用于区分loading动态图和暂无数据文案）
       this.dataList = dataResult
 
     } catch (error) {
+      this.haveRequest = true // 列表接口是否请求完毕（用于区分loading动态图和暂无数据文案）
       this.message = {
         html: error.message || '',
         visiable: true // 是否显示弹窗
